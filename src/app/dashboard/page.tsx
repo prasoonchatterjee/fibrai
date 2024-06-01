@@ -16,10 +16,13 @@ const DashboardPage = () => {
 
   useEffect(()=>{
     const ownerId = localStorage.getItem("auth");
-    const allLP:Array<LandingPage> = JSON.parse(localStorage.getItem("LP")|| '');
-    if(allLP?.length) {
-      const ownedLP = allLP.filter(lp=>lp.ownerId === ownerId);
-      setOwnerLandingPages(ownedLP);
+    const allLPStr  = localStorage.getItem("LP");
+    if(allLPStr) {
+      const allLP:Array<LandingPage> = JSON.parse(allLPStr);
+      if(allLP?.length) {
+        const ownedLP = allLP.filter(lp=>lp.ownerId === ownerId);
+        setOwnerLandingPages(ownedLP);
+      }
     }
   },[])
 

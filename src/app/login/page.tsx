@@ -1,5 +1,6 @@
 'use client';
 import { User } from '@/types/users';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEventHandler, useEffect, useState } from 'react';
 
@@ -10,19 +11,20 @@ const LoginPage = () => {
 
   const handleLogin: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    const allUsers: Array<User> = JSON.parse(
-      localStorage.getItem('users') || ''
-    );
-    if (allUsers?.length) {
-      allUsers.find((user) => {
-        if (user.username === username && user.password === password) {
-          localStorage.setItem('auth', user.id);
-        }
-      });
+    const lsAllUsers = localStorage.getItem('users');
+    if (lsAllUsers) {
+      const allUsers: Array<User> = JSON.parse(lsAllUsers);
+      if (allUsers?.length) {
+        allUsers.find((user) => {
+          if (user.username === username && user.password === password) {
+            localStorage.setItem('auth', user.id);
+          }
+        });
+      }
+      setUsername('');
+      setPassword('');
+      router.push('/dashboard');
     }
-    setUsername('');
-    setPassword('');
-    router.push('/dashboard');
   };
 
   useEffect(() => {
@@ -31,6 +33,10 @@ const LoginPage = () => {
   }, []);
 
   return (
+    <div>
+      <header>
+        <Link href="/signup" className='border border-black rounded px-2 bg-orange-100'>Go To Signup</Link>
+      </header>
     <form
       onSubmit={handleLogin}
       className=' h-screen flex justify-center items-center'
@@ -63,6 +69,7 @@ const LoginPage = () => {
         </button>
       </div>
     </form>
+    </div>
   );
 };
 

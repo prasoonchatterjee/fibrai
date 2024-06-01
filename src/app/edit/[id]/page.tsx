@@ -56,8 +56,7 @@ const EditLandingPage = () => {
   const handlePreview = () => {
     const previewPage = {...landingPage, title, description};
     localStorage.setItem('preview', JSON.stringify(previewPage));
-    console.log("reddsfadfadf", landingPage?.id)
-    router.push(`/preview/${landingPage?.id}`)
+    window.open(`/preview/${landingPage?.id}`)
   }
 
   if (landingPage)

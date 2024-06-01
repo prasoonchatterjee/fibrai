@@ -1,30 +1,39 @@
 'use client';
 import { FormEventHandler, useState } from 'react';
-import {nanoid} from 'nanoid';
-import { User } from '@/types/users';
+import { nanoid } from 'nanoid';
+import { LandingPage, User } from '@/types/users';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const SignUpPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
- 
-  const handleSignUp:FormEventHandler<HTMLFormElement> = (e) => {
+
+  const handleSignUp: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    const userObj:User = {username, password, id: nanoid()};
-    const allUsers:Array<User> = JSON.parse(localStorage.getItem('users') || '');
-    let newAllUsers = []
-    if(allUsers?.length) newAllUsers = [...allUsers,userObj];
-    else newAllUsers = [userObj];
+    const userObj: User = { username, password, id: nanoid() };
+    const lsAllUsers = localStorage.getItem('users');
+    let allUsers: Array<User>;
+    let newAllUsers: Array<User>;
+    if (lsAllUsers) {
+      allUsers = JSON.parse(lsAllUsers);
+      newAllUsers = [...allUsers, userObj];
+    } else newAllUsers = [userObj];
 
     const jsonStringObj = JSON.stringify(newAllUsers);
-    localStorage.setItem("users",jsonStringObj);
+    console.log('jsonStringObj', jsonStringObj);
+    localStorage.setItem('users', jsonStringObj);
     setUsername('');
     setPassword('');
     router.push('/login');
-  }
-  
+  };
+
   return (
+    <div>
+    <header>
+      <Link href="/login" className='border border-black rounded px-2 bg-orange-100'>Go To Login</Link>
+    </header>
     <form
       onSubmit={handleSignUp}
       className=' h-screen flex justify-center items-center'
@@ -57,6 +66,7 @@ const SignUpPage = () => {
         </button>
       </div>
     </form>
+    </div>
   );
 };
 
